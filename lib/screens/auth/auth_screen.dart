@@ -1,20 +1,20 @@
 // Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart';
-import '/flutter_flow/custom_functions.dart';
+import '/custom_code/widgets/index.dart'; // Imports other custom widgets
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
+// Begin custom widget code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 class AuthScreen extends StatefulWidget {
-  final Function(String, String) onSignIn;
-  final VoidCallback onRegister;
-  final VoidCallback onForgotPassword;
+  final double width;
+  final double height;
 
   const AuthScreen({
     Key? key,
-    required this.onSignIn,
-    required this.onRegister,
-    required this.onForgotPassword,
+    required this.width,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -42,23 +42,6 @@ class _AuthScreenState extends State<AuthScreen> {
       _isLoading = true;
       _errorMessage = null;
     });
-
-    try {
-      await widget.onSignIn(
-        _emailController.text.trim(),
-        _passwordController.text,
-      );
-    } catch (e) {
-      setState(() {
-        _errorMessage = e.toString();
-      });
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
   }
 
   @override
@@ -124,11 +107,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       : const Text('Войти'),
                 ),
                 TextButton(
-                  onPressed: widget.onRegister,
+                  onPressed: () => context.go('/register'),
                   child: const Text('Создать аккаунт'),
                 ),
                 TextButton(
-                  onPressed: widget.onForgotPassword,
+                  onPressed: () => context.go('/forgot-password'),
                   child: const Text('Забыли пароль?'),
                 ),
               ],
@@ -139,3 +122,5 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the green button on the right!
