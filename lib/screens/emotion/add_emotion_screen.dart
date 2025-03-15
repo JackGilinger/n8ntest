@@ -1,15 +1,22 @@
 // Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart';
-import '/flutter_flow/custom_functions.dart';
+import '/custom_code/widgets/index.dart'; // Imports other custom widgets
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
+// Begin custom widget code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 class AddEmotionScreen extends StatefulWidget {
-  final Function(String emotion, double intensity, String note) onSaveEmotion;
+  final double width;
+  final double height;
+  final Future Function(String emotion, double intensity, String note)
+      onSaveEmotion;
 
   const AddEmotionScreen({
     Key? key,
+    required this.width,
+    required this.height,
     required this.onSaveEmotion,
   }) : super(key: key);
 
@@ -18,7 +25,13 @@ class AddEmotionScreen extends StatefulWidget {
 }
 
 class _AddEmotionScreenState extends State<AddEmotionScreen> {
-  final List<String> emotions = ['Радость', 'Грусть', 'Злость', 'Страх', 'Удивление'];
+  final List<String> emotions = [
+    'Радость',
+    'Грусть',
+    'Злость',
+    'Страх',
+    'Удивление'
+  ];
   String selectedEmotion = 'Радость';
   double intensityValue = 3;
   final TextEditingController _noteController = TextEditingController();
@@ -161,3 +174,5 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
     );
   }
 }
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the green button on the right!
