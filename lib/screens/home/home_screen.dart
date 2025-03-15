@@ -53,13 +53,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Дневник эмоций'),
-        elevation: 2,
+        title: const Text(
+          'Эмоции',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.settings_outlined, color: Colors.black54),
             onPressed: widget.onOpenSettings,
           ),
         ],
@@ -67,9 +72,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       body: Column(
         children: [
           // Enhanced date picker
-          Card(
-            margin: const EdgeInsets.all(12),
-            elevation: 4,
+          Material(
+            color: Colors.transparent,
             child: InkWell(
               onTap: () async {
                 final DateTime? picked = await showDatePicker(
@@ -81,11 +85,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     return Theme(
                       data: Theme.of(context).copyWith(
                         colorScheme: ColorScheme.light(
-                          primary: FlutterFlowTheme.of(context).primary,
-                          onPrimary: FlutterFlowTheme.of(context).primaryText,
-                          surface:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          onSurface: FlutterFlowTheme.of(context).primaryText,
+                          primary: Colors.black87,
+                          onPrimary: Colors.white,
+                          surface: Colors.white,
+                          onSurface: Colors.black87,
                         ),
                       ),
                       child: child!,
@@ -102,82 +105,110 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   _controller.forward(from: 0.0);
                 }
               },
-              child: Padding(
-                padding: const EdgeInsets.all(16),
+              child: Container(
+                padding: const EdgeInsets.all(24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
                         Icon(
-                          Icons.calendar_today,
-                          color: FlutterFlowTheme.of(context).primary,
+                          Icons.calendar_today_outlined,
+                          color: Colors.black54,
+                          size: 20,
                         ),
                         const SizedBox(width: 12),
                         Text(
                           _selectedDay?.toString().split(' ')[0] ??
                               DateTime.now().toString().split(' ')[0],
-                          style: FlutterFlowTheme.of(context).titleMedium,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      color: FlutterFlowTheme.of(context).secondaryText,
+                    const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.black38,
                     ),
                   ],
                 ),
               ),
             ),
           ),
+          const Divider(height: 1),
           // Emotions list with animation
           Expanded(
             child: FadeTransition(
               opacity: _animation,
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 itemBuilder: (context, index) {
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    elevation: 2,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      leading: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).primaryBackground,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Text(
-                            '😊',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        'Emotion $index',
-                        style: FlutterFlowTheme.of(context).titleMedium,
-                      ),
-                      subtitle: Text(
-                        'Note for emotion $index',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                      trailing: Text(
-                        '$index',
-                        style:
-                            FlutterFlowTheme.of(context).labelLarge?.copyWith(
-                                  color: FlutterFlowTheme.of(context).primary,
-                                ),
-                      ),
+                  return Material(
+                    color: Colors.transparent,
+                    child: InkWell(
                       onTap: () => widget.onEmotionSelected('$index'),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.05),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  '😊',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Emotion $index',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Note for emotion $index',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              '$index',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black38,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -189,13 +220,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: widget.onAddEmotion,
-        elevation: 8,
-        backgroundColor: FlutterFlowTheme.of(context).primary,
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.black87,
+        elevation: 2,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
-// Set your widget name, define your parameter, and then add the
-// boilerplate code using the green button on the right!
