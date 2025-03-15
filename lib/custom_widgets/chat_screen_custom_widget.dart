@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+// Additional imports for handling animations, uuid for random tagging, timers.
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:uuid/uuid.dart';
+import 'dart:async';
 
 class ChatScreenWidget extends StatefulWidget {
   final double width;
@@ -24,35 +27,72 @@ class ChatScreenWidget extends StatefulWidget {
 }
 
 class _ChatScreenWidgetState extends State<ChatScreenWidget> {
+  final List<Map<String, dynamic>> messages = [];
+  final TextEditingController textController = TextEditingController();
+  final uuid = Uuid();
+
+  // Mock function to handle sending a message
+  void sendMessage() {
+    if (textController.text.isEmpty) return;
+
+    final userMessage = {
+      'text': textController.text,
+      'isUser': true,
+      'tag': uuid.v4(),
+    };
+
+    setState(() {
+      messages.add(userMessage);
+      textController.clear();
+    });
+
+    // Mock "assistant is typing" indicator
+    final typingIndicator = {
+      'text': 'Assistant typing...',
+      'isTyping': true,
+      'tag': uuid.v4(),
+    };
+
+    setState(() {
+      messages.add(typingIndicator);
+    });
+
+    // Mock assistant response after 1-second delay
+    Timer(const Duration(seconds: 1), () {
+      setState(() {
+        messages.remove(typingIndicator);
+        messages.add({
+          'text': 'This is a mock response from assistant.',
+          'isUser': false,
+          'tag': uuid.v4(),
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF3F7FD),
+      backgroundColor: const Color(0xFFFF3F7FD),
       appBar: AppBar(
-        title: const Text('OpenAI Chat', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF19C37D),
+        title: const Text('GChat'),
+        backgroundColor: Colors.white.withOpacity(0.7), // translucent blur effect
         elevation: 0,
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView(
+            child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              children: [
-                _buildChatBubble("Привет! Что ты хочешь сегодня узнать?", false)
-                    .animate()
-                    .fade(duration: 400.ms)
-                    .moveY(begin: 20),
-                _buildChatBubble(
-                        "Приветствую, это тестовый UI от FlutterFlow.", true)
-                    .animate()
-                    .fade(delay: 400.ms, duration: 400.ms)
-                    .moveY(begin: 20),
-                _buildChatBubble("Отлично! Напиши свой вопрос сейчас.", false)
-                    .animate()
-                    .fade(delay: 800.ms, duration: 400.ms)
-                    .moveY(begin: 20)
-              ],
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final msg = messages[index];
+                return _buildChatBubble(
+                  msg['text'],
+                  msg['isUser'] ?? false,
+                  isTyping: msg['isTyping'] ?? false,
+                );
+              },
             ),
           ),
           _chatInputArea()
@@ -61,14 +101,14 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
     );
   }
 
-  Widget _buildChatBubble(String message, bool isUser) {
+  Widget _buildChatBubble(String message, bool isUser, {bool isTyping = false}) {
     return Align(
       alignment: isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: isUser ? const Color(0xFF19C37D) : const Color(0xFFFFFFFF),
+          color: isUser ? const Color(0xFFF19C37D) : const Color(0xFFFFFFFF),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(18),
             topRight: const Radius.circular(18),
@@ -80,7 +120,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
           ],
         ),
         child: Text(
-          message,
+          isTyping ? '...' : message,
           style: TextStyle(
               color: isUser ? Colors.white : Colors.black87, fontSize: 16),
         ),
@@ -98,27 +138,25 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.02), blurRadius: 8)
-                ],
               ),
               child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Введите ваше сообщение...',
+                controller: textController,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  hintText: 'Write your message here...',
                   border: InputBorder.none,
                   contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
               ),
             ),
           ),
           const SizedBox(width: 12),
           CircleAvatar(
-            backgroundColor: const Color(0xFF19C37D),
+            backgroundColor: const Color(0xFFF19C37D),
             child: IconButton(
               icon: const Icon(Icons.send_outlined, color: Colors.white),
-              onPressed: () {},
+              onPressed: sendMessage,
             ),
           ),
         ],
@@ -126,5 +164,6 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
     );
   }
 }
+
 // Set your widget name, define your parameter, and then add the
 // boilerplate code using the green button on the right!
