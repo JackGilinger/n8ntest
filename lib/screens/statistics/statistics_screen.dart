@@ -10,7 +10,18 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class StatisticsScreen extends StatefulWidget {
-  const StatisticsScreen({Key? key}) : super(key: key);
+  final Function(String) onPeriodChanged;
+  final Map<String, double> emotionDistribution;
+  final List<Map<String, dynamic>> intensityData;
+  final List<Map<String, int>> tagFrequency;
+
+  const StatisticsScreen({
+    Key? key,
+    required this.onPeriodChanged,
+    required this.emotionDistribution,
+    required this.intensityData,
+    required this.tagFrequency,
+  }) : super(key: key);
 
   @override
   _StatisticsScreenState createState() => _StatisticsScreenState();
@@ -30,6 +41,7 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
               setState(() {
                 selectedPeriod = value;
               });
+              widget.onPeriodChanged(value);
             },
             itemBuilder: (context) => [
               const PopupMenuItem(
@@ -70,28 +82,13 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                       height: 200,
                       child: PieChart(
                         PieChartData(
-                          sections: [
-                            PieChartSectionData(
-                              value: 35,
-                              title: 'Радость',
-                              color: Colors.green,
-                            ),
-                            PieChartSectionData(
-                              value: 25,
-                              title: 'Грусть',
-                              color: Colors.blue,
-                            ),
-                            PieChartSectionData(
-                              value: 20,
-                              title: 'Злость',
-                              color: Colors.red,
-                            ),
-                            PieChartSectionData(
-                              value: 20,
-                              title: 'Другие',
-                              color: Colors.grey,
-                            ),
-                          ],
+                          sections: widget.emotionDistribution.entries.map((entry) {
+                            return PieChartSectionData(
+                              value: entry.value,
+                              title: entry.key,
+                              color: _getColorForEmotion(entry.key),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ),
@@ -126,13 +123,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                           ),
                           lineBarsData: [
                             LineChartBarData(
-                              spots: const [
-                                FlSpot(0, 3),
-                                FlSpot(1, 2),
-                                FlSpot(2, 5),
-                                FlSpot(3, 3.1),
-                                FlSpot(4, 4),
-                              ],
+                              spots: widget.intensityData.asMap().entries.map((entry) {
+                                return FlSpot(
+                                  entry.key.toDouble(), 
+                                  entry.value['intensity']?.toDouble() ?? 0
+                                );
+                              }).toList(),
                               isCurved: true,
                               color: Colors.blue,
                               barWidth: 3,
@@ -164,13 +160,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: [
-                        Chip(label: Text('Работа (23)')),
-                        Chip(label: Text('Семья (18)')),
-                        Chip(label: Text('Спорт (15)')),
-                        Chip(label: Text('Отдых (12)')),
-                        Chip(label: Text('Друзья (10)')),
-                      ],
+                      children: widget.tagFrequency.map((tag) {
+                        return Chip(
+                          label: Text('${tag['tag']} (${tag['count']})'),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
@@ -180,5 +174,22 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
         ),
       ),
     );
+  }
+
+  Color _getColorForEmotion(String emotion) {
+    switch (emotion.toLowerCase()) {
+      case 'радость':
+        return Colors.green;
+      case 'грусть':
+        return Colors.blue;
+      case 'злость':
+        return Colors.red;
+      case 'страх':
+        return Colors.purple;
+      case 'удивление':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
   }
 }
