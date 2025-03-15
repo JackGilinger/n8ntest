@@ -21,6 +21,7 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
   double intensityValue = 3;
   final TextEditingController _noteController = TextEditingController();
   bool _isLoading = false;
+  String? _intensityError;
 
   @override
   void dispose() {
@@ -28,10 +29,28 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
     super.dispose();
   }
 
+  void _validateIntensity(double value) {
+    setState(() {
+      if (value < 1 || value > 5) {
+        _intensityError = 'Интенсивность должна быть от 1 до 5';
+      } else {
+        _intensityError = null;
+      }
+      intensityValue = value;
+    });
+  }
+
   Future<void> _saveEmotion() async {
     if (_noteController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Пожалуйста, добавьте описание')),
+      );
+      return;
+    }
+
+    if (_intensityError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_intensityError!)),
       );
       return;
     }
@@ -112,12 +131,16 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
               max: 5,
               divisions: 4,
               label: intensityValue.round().toString(),
-              onChanged: (value) {
-                setState(() {
-                  intensityValue = value;
-                });
-              },
+              onChanged: _validateIntensity,
             ),
+            if (_intensityError != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Text(
+                  _intensityError!,
+                  style: TextStyle(color: Colors.red[700], fontSize: 12),
+                ),
+              ),
             const SizedBox(height: 24),
             TextField(
               controller: _noteController,
