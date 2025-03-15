@@ -1,19 +1,29 @@
+// Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart';
-import '/flutter_flow/custom_functions.dart';
+import '/custom_code/widgets/index.dart'; // Imports other custom widgets
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
+// Begin custom widget code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
+
 import 'package:flutter_animate/flutter_animate.dart';
 
 class ChatScreenWidget extends StatefulWidget {
-  const ChatScreenWidget({super.key});
+  final double width;
+  final double height;
+
+  const ChatScreenWidget({
+    Key? key,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
 
   @override
   _ChatScreenWidgetState createState() => _ChatScreenWidgetState();
 }
 
 class _ChatScreenWidgetState extends State<ChatScreenWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,12 +65,10 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
     return Align(
       alignment: isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color:
-              isUser ? const Color(0xFF19C37D) : const Color(0xFFFFFFFF),
+          color: isUser ? const Color(0xFF19C37D) : const Color(0xFFFFFFFF),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(18),
             topRight: const Radius.circular(18),
@@ -99,8 +107,8 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
                 decoration: InputDecoration(
                   hintText: 'Введите ваше сообщение...',
                   border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
               ),
             ),
@@ -118,3 +126,5 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
     );
   }
 }
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the green button on the right!
