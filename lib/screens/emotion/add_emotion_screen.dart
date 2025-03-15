@@ -5,11 +5,13 @@ import '/custom_code/widgets/index.dart';
 import '/flutter_flow/custom_functions.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 class AddEmotionScreen extends StatefulWidget {
-  const AddEmotionScreen({Key? key}) : super(key: key);
+  final Function(String emotion, double intensity, String note) onSaveEmotion;
+
+  const AddEmotionScreen({
+    Key? key,
+    required this.onSaveEmotion,
+  }) : super(key: key);
 
   @override
   _AddEmotionScreenState createState() => _AddEmotionScreenState();
@@ -60,20 +62,13 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
     });
 
     try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) throw Exception('Пользователь не авторизован');
-
-      await FirebaseFirestore.instance.collection('emotions').add({
-        'userId': user.uid,
-        'emotion': selectedEmotion,
-        'intensity': intensityValue,
-        'note': _noteController.text,
-        'date': DateTime.now(),
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-
+      await widget.onSaveEmotion(
+        selectedEmotion,
+        intensityValue,
+        _noteController.text,
+      );
       if (mounted) {
-        context.pop();
+        Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
