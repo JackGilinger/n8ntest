@@ -41,7 +41,6 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
     );
   }
 
-  // Handle sending messages with animation and timestamp
   void sendMessage() {
     if (textController.text.isEmpty) return;
 
@@ -70,53 +69,49 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
       animationController.forward(from: 0.0);
     });
 
-    Timer(const Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 1), () {
       setState(() {
         messages.remove(typingIndicator);
         messages.add({
-          'text': 'This is a mock response from assistant.',
+          'text': 'Response text',
           'isUser': false,
           'tag': uuid.v4(),
           'timestamp': DateFormat('HH:mm').format(DateTime.now()),
         });
-        animationController.forward(from: 0.0);
-      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE3F2FD), // Improved background color
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         title: const Text('GChat'),
-        backgroundColor: Colors.blueAccent,
-        elevation: 1,
+        backgroundColor: FlutterFlowTheme.primaryColor,
       ),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              padding: const EdgeInsets.all(12),
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final msg = messages[index];
                 return Column(
-                  crossAxisAlignment: msg['isUser']
+                  crossAxisAlignment: msg['isUser'] == true
                       ? CrossAxisAlignment.end
                       : CrossAxisAlignment.start,
                   children: [
-                    _buildChatBubble(
+                    _chatBubble(
                       msg['text'],
-                      msg['isUser'] ?? false,
-                      isTyping: msg['isTyping'] ?? false,
-                    ).animate().fadeIn(duration: 300.ms),
+                      msg['isUser'] == true,
+                      isTyping: msg['isTyping'] == true,
+                    ).animate().slideY(duration: 300.ms),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                       child: Text(
                         msg['timestamp'],
-                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                        style: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ],
@@ -124,73 +119,31 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
               },
             ),
           ),
-          _chatInputArea().animate().slideY(duration: 500.ms, begin: 1, end: 0)
+          _chatInputArea(),
         ],
       ),
     );
   }
 
-  Widget _buildChatBubble(String message, bool isUser,
-      {bool isTyping = false}) {
+  Widget _chatBubble(String message, bool isUser, {bool isTyping = false}) {
     return Align(
       alignment: isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isUser ? Colors.blueAccent : Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18),
-            topRight: Radius.circular(18),
-            bottomLeft: Radius.circular(isUser ? 18 : 0),
-            bottomRight: Radius.circular(isUser ? 0 : 18),
-          ),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [BoxShadow(color: Colors.grey.shade200, blurRadius: 6)],
         ),
         child: Text(
-          isTyping ? '...' : message,
+          message,
           style: TextStyle(
             color: isUser ? Colors.white : Colors.black87,
-            fontSize: 16,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _chatInputArea() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: textController,
-              style: const TextStyle(color: Colors.black87),
-              decoration: InputDecoration(
-                hintText: 'Write your message here...',
-                filled: true,
-                fillColor: Colors.white,
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blueAccent,
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.send, color: Colors.white),
-              onPressed: sendMessage,
-            ),
-          ),
-        ],
       ),
     );
   }
 }
+```,
+  
