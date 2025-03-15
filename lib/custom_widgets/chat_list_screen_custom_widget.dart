@@ -39,7 +39,6 @@ class _ChatListScreenCustomWidgetState
         children: [
           // Search bar
           Padding(
-            padding: const EdgeInsets.all(16.0),
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
