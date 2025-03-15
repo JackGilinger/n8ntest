@@ -39,9 +39,9 @@ class _ChatListScreenCustomWidgetState
         children: [
           // Search bar
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8), // Reduced vertical padding
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8), // Reduced vertical padding
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
@@ -76,12 +76,20 @@ class _ChatListScreenCustomWidgetState
             child: ListView.builder(
               itemCount: 10, // Temporarily hardcoded
               padding: EdgeInsets.zero,
-              itemBuilder: (context, index) => ChatListItem(
-                avatarUrl: 'https://picsum.photos/100/100?random=$index',
-                name: 'User ${index + 1}',
-                lastMessage: 'Last message from user ${index + 1}',
-                timestamp: '${index + 1}m ago',
-                unreadCount: index % 3 == 0 ? index : 0,
+              itemBuilder: (context, index) => InkWell(
+                onTap: () {
+                  // Callback when chat item is tapped
+                  print('Chat ${index + 1} tapped');
+                  // Here you can add navigation to chat detail screen
+                  // Navigator.push(context, MaterialPageRoute(...));
+                },
+                child: ChatListItem(
+                  avatarUrl: 'https://picsum.photos/100/100?random=$index',
+                  name: 'User ${index + 1}',
+                  lastMessage: 'Last message from user ${index + 1}',
+                  timestamp: '${index + 1}m ago',
+                  unreadCount: index % 3 == 0 ? index : 0,
+                ),
               ),
             ),
           ),
