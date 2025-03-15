@@ -1,16 +1,18 @@
-// Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart'; // Imports other custom widgets
-import '/flutter_flow/custom_functions.dart'; // Imports custom functions
+import '/custom_code/widgets/index.dart';
+import '/flutter_flow/custom_functions.dart';
 import 'package:flutter/material.dart';
-
-// Begin custom widget code
-// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 import 'package:flutter_animate/flutter_animate.dart';
 
-class ChatScreenWidget extends StatelessWidget {
+class ChatScreenWidget extends StatefulWidget {
   const ChatScreenWidget({super.key});
+
+  @override
+  _ChatScreenWidgetState createState() => _ChatScreenWidgetState();
+}
+
+class _ChatScreenWidgetState extends State<ChatScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +29,16 @@ class ChatScreenWidget extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               children: [
-                _buildChatBubble("Привет! Как я могу помочь?", false)
+                _buildChatBubble("Привет! Что ты хочешь сегодня узнать?", false)
                     .animate()
                     .fade(duration: 400.ms)
                     .moveY(begin: 20),
                 _buildChatBubble(
-                        "Покажи мне, как сделать UI во FlutterFlow.", true)
+                        "Приветствую, это тестовый UI от FlutterFlow.", true)
                     .animate()
                     .fade(delay: 400.ms, duration: 400.ms)
                     .moveY(begin: 20),
-                _buildChatBubble("Конечно! Давай начнем с простого.", false)
+                _buildChatBubble("Отлично! Напиши свой вопрос сейчас.", false)
                     .animate()
                     .fade(delay: 800.ms, duration: 400.ms)
                     .moveY(begin: 20)
@@ -53,10 +55,12 @@ class ChatScreenWidget extends StatelessWidget {
     return Align(
       alignment: isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: isUser ? const Color(0xFF19C37D) : const Color(0xFFFFFFFF),
+          color:
+              isUser ? const Color(0xFF19C37D) : const Color(0xFFFFFFFF),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(18),
             topRight: const Radius.circular(18),
@@ -84,18 +88,19 @@ class ChatScreenWidget extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.02), blurRadius: 8)
-                  ]),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.02), blurRadius: 8)
+                ],
+              ),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Напишите сообщение...',
+                  hintText: 'Введите ваше сообщение...',
                   border: InputBorder.none,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 12),
                 ),
               ),
             ),
@@ -113,5 +118,3 @@ class ChatScreenWidget extends StatelessWidget {
     );
   }
 }
-// Set your widget name, define your parameter, and then add the
-// boilerplate code using the green button on the right!
