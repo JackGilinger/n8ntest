@@ -1,15 +1,21 @@
 // Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart';
-import '/flutter_flow/custom_functions.dart';
+import '/custom_code/widgets/index.dart'; // Imports other custom widgets
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
+// Begin custom widget code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 class StatisticsScreen extends StatefulWidget {
-  final Function(String) onPeriodChanged;
+  final double width;
+  final double height;
+  final Future Function(String period) onPeriodChanged;
 
   const StatisticsScreen({
     Key? key,
+    required this.width,
+    required this.height,
     required this.onPeriodChanged,
   }) : super(key: key);
 
@@ -17,9 +23,10 @@ class StatisticsScreen extends StatefulWidget {
   _StatisticsScreenState createState() => _StatisticsScreenState();
 }
 
-class _StatisticsScreenState extends State<StatisticsScreen> with TickerProviderStateMixin {
+class _StatisticsScreenState extends State<StatisticsScreen>
+    with TickerProviderStateMixin {
   String selectedPeriod = 'week';
-  
+
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 300),
     vsync: this,
@@ -63,7 +70,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                 value: 'day',
                 child: Row(
                   children: [
-                    Icon(Icons.today, color: FlutterFlowTheme.of(context).primary),
+                    Icon(Icons.today,
+                        color: FlutterFlowTheme.of(context).primary),
                     const SizedBox(width: 12),
                     const Text('День'),
                   ],
@@ -73,7 +81,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                 value: 'week',
                 child: Row(
                   children: [
-                    Icon(Icons.view_week, color: FlutterFlowTheme.of(context).primary),
+                    Icon(Icons.view_week,
+                        color: FlutterFlowTheme.of(context).primary),
                     const SizedBox(width: 12),
                     const Text('Неделя'),
                   ],
@@ -83,7 +92,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                 value: 'month',
                 child: Row(
                   children: [
-                    Icon(Icons.calendar_month, color: FlutterFlowTheme.of(context).primary),
+                    Icon(Icons.calendar_month,
+                        color: FlutterFlowTheme.of(context).primary),
                     const SizedBox(width: 12),
                     const Text('Месяц'),
                   ],
@@ -116,9 +126,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                           const SizedBox(width: 12),
                           Text(
                             'Распределение эмоций',
-                            style: FlutterFlowTheme.of(context).titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ],
                       ),
@@ -126,7 +138,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                       Container(
                         height: 200,
                         decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryBackground,
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Center(
@@ -155,9 +168,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                           const SizedBox(width: 12),
                           Text(
                             'Интенсивность эмоций',
-                            style: FlutterFlowTheme.of(context).titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ],
                       ),
@@ -165,7 +180,8 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                       Container(
                         height: 200,
                         decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryBackground,
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Center(
@@ -194,9 +210,11 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                           const SizedBox(width: 12),
                           Text(
                             'Часто используемые теги',
-                            style: FlutterFlowTheme.of(context).titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ],
                       ),
@@ -205,11 +223,17 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
                         spacing: 8,
                         runSpacing: 8,
                         children: [
-                          for (final tag in ['Работа (5)', 'Семья (3)', 'Спорт (2)'])
+                          for (final tag in [
+                            'Работа (5)',
+                            'Семья (3)',
+                            'Спорт (2)'
+                          ])
                             Chip(
                               label: Text(tag),
-                              backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-                              labelStyle: FlutterFlowTheme.of(context).bodyMedium,
+                              backgroundColor: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              labelStyle:
+                                  FlutterFlowTheme.of(context).bodyMedium,
                               elevation: 2,
                               padding: const EdgeInsets.all(8),
                             ),
@@ -226,3 +250,5 @@ class _StatisticsScreenState extends State<StatisticsScreen> with TickerProvider
     );
   }
 }
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the green button on the right!
