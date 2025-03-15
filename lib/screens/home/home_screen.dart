@@ -4,13 +4,23 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/widgets/index.dart';
 import '/flutter_flow/custom_functions.dart';
 import 'package:flutter/material.dart';
-
 import 'package:table_calendar/table_calendar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final Function(DateTime) onDateSelected;
+  final Function(String) onEmotionSelected;
+  final Function() onAddEmotion;
+  final Function() onOpenSettings;
+  final Stream<List<Map<String, dynamic>>> emotionsStream;
+
+  const HomeScreen({
+    Key? key,
+    required this.onDateSelected,
+    required this.onEmotionSelected,
+    required this.onAddEmotion,
+    required this.onOpenSettings,
+    required this.emotionsStream,
+  }) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -20,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => context.go('/settings'),
+            onPressed: widget.onOpenSettings,
           ),
         ],
       ),
@@ -48,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _selectedDay = selectedDay;
                 _focusedDay = focusedDay;
               });
+              widget.onDateSelected(selectedDay);
             },
             onFormatChanged: (format) {
               setState(() {
@@ -56,13 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('emotions')
-                  .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-                  .where('date',
-                      isEqualTo: _selectedDay ?? DateTime.now())
-                  .snapshots(),
+            child: StreamBuilder<List<Map<String, dynamic>>>(
+              stream: widget.emotionsStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -76,12 +82,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
 
-                final emotions = snapshot.data!.docs;
+                final emotions = snapshot.data!;
 
                 return ListView.builder(
                   itemCount: emotions.length,
                   itemBuilder: (context, index) {
-                    final emotion = emotions[index].data() as Map<String, dynamic>;
+                    final emotion = emotions[index];
                     return ListTile(
                       title: Text(emotion['emotion'] ?? ''),
                       subtitle: Text(emotion['note'] ?? ''),
@@ -89,14 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         emotion['intensity']?.toString() ?? '',
                         style: FlutterFlowTheme.of(context).bodyMedium,
                       ),
-                      onTap: () {
-                        context.pushNamed(
-                          'emotion_details',
-                          queryParameters: {
-                            'id': emotions[index].id,
-                          },
-                        );
-                      },
+                      onTap: () => widget.onEmotionSelected(emotion['id']),
                     );
                   },
                 );
@@ -106,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/add_emotion'),
+        onPressed: widget.onAddEmotion,
         child: const Icon(Icons.add),
       ),
     );
