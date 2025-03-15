@@ -1,4 +1,12 @@
+// Automatic FlutterFlow imports
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/custom_code/widgets/index.dart'; // Imports other custom widgets
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
+
+// Begin custom widget code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 import 'package:flutter_animate/flutter_animate.dart';
 
 class ChatScreenWidget extends StatelessWidget {
@@ -23,7 +31,8 @@ class ChatScreenWidget extends StatelessWidget {
                     .animate()
                     .fade(duration: 400.ms)
                     .moveY(begin: 20),
-                _buildChatBubble("Покажи мне, как сделать UI во FlutterFlow.", true)
+                _buildChatBubble(
+                        "Покажи мне, как сделать UI во FlutterFlow.", true)
                     .animate()
                     .fade(delay: 400.ms, duration: 400.ms)
                     .moveY(begin: 20),
@@ -85,8 +94,8 @@ class ChatScreenWidget extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: 'Напишите сообщение...',
                   border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 12),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
               ),
             ),
@@ -104,3 +113,5 @@ class ChatScreenWidget extends StatelessWidget {
     );
   }
 }
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the green button on the right!
