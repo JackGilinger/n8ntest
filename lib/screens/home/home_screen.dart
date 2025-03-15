@@ -1,19 +1,25 @@
 // Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart';
-import '/flutter_flow/custom_functions.dart';
+import '/custom_code/widgets/index.dart'; // Imports other custom widgets
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// Begin custom widget code
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 class HomeScreen extends StatefulWidget {
-  final Function(DateTime) onDateSelected;
-  final Function(String) onEmotionSelected;
-  final Function() onAddEmotion;
-  final Function() onOpenSettings;
+  final double width;
+  final double height;
+
+  final Future Function(DateTime date) onDateSelected;
+  final Future Function(String emotion) onEmotionSelected;
+  final Future Function() onAddEmotion;
+  final Future Function() onOpenSettings;
 
   const HomeScreen({
     Key? key,
+    required this.width,
+    required this.height,
     required this.onDateSelected,
     required this.onEmotionSelected,
     required this.onAddEmotion,
@@ -27,7 +33,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  
+
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 300),
     vsync: this,
@@ -77,7 +83,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         colorScheme: ColorScheme.light(
                           primary: FlutterFlowTheme.of(context).primary,
                           onPrimary: FlutterFlowTheme.of(context).primaryText,
-                          surface: FlutterFlowTheme.of(context).secondaryBackground,
+                          surface:
+                              FlutterFlowTheme.of(context).secondaryBackground,
                           onSurface: FlutterFlowTheme.of(context).primaryText,
                         ),
                       ),
@@ -85,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     );
                   },
                 );
-                
+
                 if (picked != null) {
                   setState(() {
                     _selectedDay = picked;
@@ -108,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          _selectedDay?.toString().split(' ')[0] ?? 
-                          DateTime.now().toString().split(' ')[0],
+                          _selectedDay?.toString().split(' ')[0] ??
+                              DateTime.now().toString().split(' ')[0],
                           style: FlutterFlowTheme.of(context).titleMedium,
                         ),
                       ],
@@ -165,9 +172,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       trailing: Text(
                         '$index',
-                        style: FlutterFlowTheme.of(context).labelLarge?.copyWith(
-                          color: FlutterFlowTheme.of(context).primary,
-                        ),
+                        style:
+                            FlutterFlowTheme.of(context).labelLarge?.copyWith(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                ),
                       ),
                       onTap: () => widget.onEmotionSelected('$index'),
                     ),
@@ -189,3 +197,5 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 }
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the green button on the right!
