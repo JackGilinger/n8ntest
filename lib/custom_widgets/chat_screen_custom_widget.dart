@@ -60,6 +60,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
 
     final typingIndicator = {
       'text': 'Assistant typing...',
+      'isUser': false,
       'isTyping': true,
       'tag': uuid.v4(),
       'timestamp': DateFormat('HH:mm').format(DateTime.now()),
@@ -102,14 +103,14 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
               itemBuilder: (context, index) {
                 final msg = messages[index];
                 return Column(
-                  crossAxisAlignment: msg['isUser']
+                  crossAxisAlignment: msg['isUser'] == true
                       ? CrossAxisAlignment.end
                       : CrossAxisAlignment.start,
                   children: [
                     _buildChatBubble(
                       msg['text'],
-                      msg['isUser'] ?? false,
-                      isTyping: msg['isTyping'] ?? false,
+                      msg['isUser'] == true,
+                      isTyping: msg['isTyping'] == true,
                     ).animate().fadeIn(duration: 300.ms),
                     Padding(
                       padding: const EdgeInsets.symmetric(
