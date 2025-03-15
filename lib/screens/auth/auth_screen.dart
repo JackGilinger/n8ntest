@@ -5,11 +5,17 @@ import '/custom_code/widgets/index.dart';
 import '/flutter_flow/custom_functions.dart';
 import 'package:flutter/material.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({Key? key}) : super(key: key);
+  final Function(String, String) onSignIn;
+  final VoidCallback onRegister;
+  final VoidCallback onForgotPassword;
+
+  const AuthScreen({
+    Key? key,
+    required this.onSignIn,
+    required this.onRegister,
+    required this.onForgotPassword,
+  }) : super(key: key);
 
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -38,16 +44,13 @@ class _AuthScreenState extends State<AuthScreen> {
     });
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
+      await widget.onSignIn(
+        _emailController.text.trim(),
+        _passwordController.text,
       );
-      if (mounted) {
-        context.go('/home');
-      }
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       setState(() {
-        _errorMessage = e.message;
+        _errorMessage = e.toString();
       });
     } finally {
       if (mounted) {
@@ -121,11 +124,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       : const Text('Войти'),
                 ),
                 TextButton(
-                  onPressed: () => context.go('/register'),
+                  onPressed: widget.onRegister,
                   child: const Text('Создать аккаунт'),
                 ),
                 TextButton(
-                  onPressed: () => context.go('/forgot-password'),
+                  onPressed: widget.onForgotPassword,
                   child: const Text('Забыли пароль?'),
                 ),
               ],
