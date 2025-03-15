@@ -22,12 +22,13 @@ class NotificationService {
   NotificationService._internal();
 
   Future<void> init() async {
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    const AndroidInitializationSettings initializationSettingsAndroid = 
+      AndroidInitializationSettings('@mipmap/launcher_icon'); // Используем иконку приложения
     
     final DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
+      requestSoundPermission: true, // Включаем запрос разрешений для более полного UX
+      requestBadgePermission: true,
+      requestAlertPermission: true,
       onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
 
@@ -53,15 +54,24 @@ class NotificationService {
       id,
       title,
       body,
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
           'emotion_diary_channel',
           'Дневник эмоций',
-          channelDescription: 'Канал уведомлений дневника эмоций',
+          channelDescription: 'Основной канал уведомлений',
           importance: Importance.max,
           priority: Priority.high,
+          enableLights: true, // Добавляем световую индикацию
+          color: Colors.blue, // Цвет уведомления
+          styleInformation: BigTextStyleInformation(body), // Поддержка длинного текста
+          largeIcon: const DrawableResourceAndroidBitmap('@mipmap/launcher_icon'), // Большая иконка
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.active, // Приоритет уведомления
+        ),
       ),
     );
   }
@@ -77,13 +87,24 @@ class NotificationService {
       title,
       body,
       tz.TZDateTime.from(scheduledDate, tz.local),
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
           'emotion_diary_channel',
           'Дневник эмоций',
-          channelDescription: 'Канал уведомлений дневника эмоций',
+          channelDescription: 'Основной канал уведомлений',
+          importance: Importance.max,
+          priority: Priority.high,
+          enableLights: true,
+          color: Colors.blue,
+          styleInformation: BigTextStyleInformation(body),
+          largeIcon: const DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
         ),
-        iOS: DarwinNotificationDetails(),
+        iOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.active,
+        ),
       ),
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
@@ -100,20 +121,22 @@ class NotificationService {
   }
 
   Future<void> requestPermissions() async {
-    final settings = await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    final settings = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
   }
 
   void onDidReceiveLocalNotification(int id, String? title, String? body, String? payload) {
-    // Handle iOS notification when app is in foreground
-    print('Received notification: $id, $title, $body, $payload');
+    // Обработка iOS уведомлений в фоновом режиме
+    print('Получено уведомление: $id, $title, $body, $payload');
   }
 
   void onSelectNotification(NotificationResponse details) {
-    // Handle notification tap
-    print('Notification tapped: ${details.payload}');
+    // Обработка нажатия на уведомление
+    print('Нажато уведомление: ${details.payload}');
   }
 }
