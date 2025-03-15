@@ -41,6 +41,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
     );
   }
 
+  // Handle sending messages with animation and timestamp
   void sendMessage() {
     if (textController.text.isEmpty) return;
 
@@ -86,7 +87,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE3F2FD),
+      backgroundColor: const Color(0xFFE3F2FD), // Improved background color
       appBar: AppBar(
         title: const Text('GChat'),
         backgroundColor: Colors.blueAccent,
@@ -111,7 +112,8 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
                       isTyping: msg['isTyping'] ?? false,
                     ).animate().fadeIn(duration: 300.ms),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       child: Text(
                         msg['timestamp'],
                         style: TextStyle(color: Colors.grey[600], fontSize: 12),
@@ -128,7 +130,8 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
     );
   }
 
-  Widget _buildChatBubble(String message, bool isUser, {bool isTyping = false}) {
+  Widget _buildChatBubble(String message, bool isUser,
+      {bool isTyping = false}) {
     return Align(
       alignment: isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
@@ -136,12 +139,20 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           color: isUser ? Colors.blueAccent : Colors.white,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(18),
+            topRight: Radius.circular(18),
+            bottomLeft: Radius.circular(isUser ? 18 : 0),
+            bottomRight: Radius.circular(isUser ? 0 : 18),
+          ),
           boxShadow: [BoxShadow(color: Colors.grey.shade200, blurRadius: 6)],
         ),
         child: Text(
           isTyping ? '...' : message,
-          style: TextStyle(color: isUser ? Colors.white : Colors.black87, fontSize: 16),
+          style: TextStyle(
+            color: isUser ? Colors.white : Colors.black87,
+            fontSize: 16,
+          ),
         ),
       ),
     );
@@ -155,12 +166,28 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
           Expanded(
             child: TextField(
               controller: textController,
-              decoration: InputDecoration(hintText: 'Write your message here..'),
+              style: const TextStyle(color: Colors.black87),
+              decoration: InputDecoration(
+                hintText: 'Write your message here...',
+                filled: true,
+                fillColor: Colors.white,
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              ),
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: sendMessage,
+          const SizedBox(width: 12),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueAccent,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.send, color: Colors.white),
+              onPressed: sendMessage,
+            ),
           ),
         ],
       ),
