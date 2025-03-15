@@ -14,10 +14,12 @@ class ChatListScreenCustomWidget extends StatefulWidget {
     super.key,
     this.width,
     this.height,
+    this.onChatTap, // Added callback parameter
   });
 
   final double? width;
   final double? height;
+  final Function(int)? onChatTap; // Callback for chat tap with index parameter
 
   @override
   State<ChatListScreenCustomWidget> createState() =>
@@ -78,10 +80,10 @@ class _ChatListScreenCustomWidgetState
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) => InkWell(
                 onTap: () {
-                  // Callback when chat item is tapped
-                  print('Chat ${index + 1} tapped');
-                  // Here you can add navigation to chat detail screen
-                  // Navigator.push(context, MaterialPageRoute(...));
+                  // Call the callback function if provided
+                  if (widget.onChatTap != null) {
+                    widget.onChatTap!(index);
+                  }
                 },
                 child: ChatListItem(
                   avatarUrl: 'https://picsum.photos/100/100?random=$index',
