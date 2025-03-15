@@ -45,11 +45,20 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     final theme = FlutterFlowTheme.of(context);
     
     return Container(
+      width: widget.width,
+      height: widget.height,
       decoration: BoxDecoration(
         color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(12), 
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: theme.primaryText.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: TableCalendar(
         firstDay: DateTime.utc(2020, 1, 1),
         lastDay: DateTime.utc(2030, 12, 31),
@@ -80,9 +89,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           _focusedDay = focusedDay;
         },
         calendarStyle: CalendarStyle(
-          defaultTextStyle: theme.bodyMedium!,
+          defaultTextStyle: theme.bodyMedium!.copyWith(
+            fontSize: 14,
+          ),
+          weekendTextStyle: theme.bodyMedium!.copyWith(
+            color: theme.error,
+            fontSize: 14,
+          ),
           selectedTextStyle: TextStyle(
             color: theme.primaryBackground,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
           selectedDecoration: BoxDecoration(
@@ -91,20 +107,60 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           ),
           todayTextStyle: TextStyle(
             color: theme.primary,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
           todayDecoration: BoxDecoration(
             color: theme.primaryBackground,
             shape: BoxShape.circle,
-            border: Border.all(color: theme.primary),
+            border: Border.all(
+              color: theme.primary,
+              width: 1.5,
+            ),
+          ),
+          outsideTextStyle: theme.bodyMedium!.copyWith(
+            color: theme.secondaryText.withOpacity(0.5),
+            fontSize: 14,
+          ),
+          disabledTextStyle: theme.bodyMedium!.copyWith(
+            color: theme.secondaryText.withOpacity(0.3),
+            fontSize: 14,
           ),
         ),
         headerStyle: HeaderStyle(
           formatButtonVisible: false,
           titleCentered: true,
-          titleTextStyle: theme.titleMedium!,
-          leftChevronIcon: Icon(Icons.chevron_left, color: theme.primary),
-          rightChevronIcon: Icon(Icons.chevron_right, color: theme.primary),
+          titleTextStyle: theme.titleMedium!.copyWith(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+          leftChevronIcon: Icon(
+            Icons.chevron_left,
+            color: theme.primary,
+            size: 28,
+          ),
+          rightChevronIcon: Icon(
+            Icons.chevron_right,
+            color: theme.primary,
+            size: 28,
+          ),
+          headerPadding: const EdgeInsets.symmetric(vertical: 12),
+        ),
+        daysOfWeekStyle: DaysOfWeekStyle(
+          weekdayStyle: theme.bodyMedium!.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+          ),
+          weekendStyle: theme.bodyMedium!.copyWith(
+            color: theme.error,
+            fontWeight: FontWeight.w600,
+            fontSize: 13,
+          ),
+        ),
+        calendarBuilders: CalendarBuilders(
+          markerBuilder: (context, date, events) {
+            return null; // TODO: Add emotion markers
+          },
         ),
       ),
     );
