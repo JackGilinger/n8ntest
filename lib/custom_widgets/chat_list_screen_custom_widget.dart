@@ -28,30 +28,47 @@ class _ChatListScreenCustomWidgetState
     extends State<ChatListScreenCustomWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.width,
-      height: widget.height,
-      color: FlutterFlowTheme.of(context).secondaryBackground,
-      child: Column(
+    return Scaffold(
+      backgroundColor: const Color(0xFFE3F2FD),
+      appBar: AppBar(
+        title: const Text('GChat'),
+        backgroundColor: Colors.blueAccent,
+        elevation: 1,
+      ),
+      body: Column(
         children: [
           // Search bar
           Padding(
             padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
             child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).primaryBackground,
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(color: Colors.grey.shade200),
               ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search chats...',
-                  prefixIcon: Icon(
+              child: Row(
+                children: [
+                  Icon(
                     Icons.search,
-                    color: FlutterFlowTheme.of(context).secondaryText,
+                    color: Colors.grey[600],
                   ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.all(16),
-                ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Search chats...',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -94,14 +111,17 @@ class ChatListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: FlutterFlowTheme.of(context).primaryBackground,
-            width: 1,
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade200,
+            blurRadius: 6,
           ),
-        ),
+        ],
       ),
       child: Row(
         children: [
@@ -128,13 +148,18 @@ class ChatListItem extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: FlutterFlowTheme.of(context).bodyLarge.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
                     ),
                     Text(
                       timestamp,
-                      style: FlutterFlowTheme.of(context).bodySmall,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),
@@ -144,9 +169,10 @@ class ChatListItem extends StatelessWidget {
                     Expanded(
                       child: Text(
                         lastMessage,
-                        style: FlutterFlowTheme.of(context).bodyMedium.copyWith(
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                            ),
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -159,14 +185,15 @@ class ChatListItem extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).primary,
+                          color: Colors.blueAccent,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           unreadCount.toString(),
-                          style: FlutterFlowTheme.of(context)
-                              .bodySmall
-                              .copyWith(color: Colors.white),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],
