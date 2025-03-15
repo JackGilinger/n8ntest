@@ -1,16 +1,15 @@
-// Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart'; // Imports other custom widgets
-import '/flutter_flow/custom_functions.dart'; // Imports custom functions
+import '/custom_code/widgets/index.dart';
+import '/flutter_flow/custom_functions.dart';
 import 'package:flutter/material.dart';
-// Begin custom widget code
-// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
-
-// Additional imports for handling animations, uuid for random tagging, timers.
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
+
+// DO NOT REMOVE OR MODIFY THE CODE ABOVE!
+
+// Additional imports for animations and timers
 
 class ChatScreenWidget extends StatefulWidget {
   final double width;
@@ -26,12 +25,23 @@ class ChatScreenWidget extends StatefulWidget {
   _ChatScreenWidgetState createState() => _ChatScreenWidgetState();
 }
 
-class _ChatScreenWidgetState extends State<ChatScreenWidget> {
+class _ChatScreenWidgetState extends State<ChatScreenWidget>
+    with SingleTickerProviderStateMixin {
   final List<Map<String, dynamic>> messages = [];
   final TextEditingController textController = TextEditingController();
   final uuid = Uuid();
+  late AnimationController animationController;
 
-  // Mock function to handle sending a message
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+  }
+
+  // Function to handle sending messages and animation
   void sendMessage() {
     if (textController.text.isEmpty) return;
 
@@ -44,9 +54,9 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
     setState(() {
       messages.add(userMessage);
       textController.clear();
+      animationController.forward(from: 0.0);
     });
 
-    // Mock "assistant is typing" indicator
     final typingIndicator = {
       'text': 'Assistant typing...',
       'isTyping': true,
@@ -55,9 +65,9 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
 
     setState(() {
       messages.add(typingIndicator);
+      animationController.forward(from: 0.0);
     });
 
-    // Mock assistant response after 1-second delay
     Timer(const Duration(seconds: 1), () {
       setState(() {
         messages.remove(typingIndicator);
@@ -66,6 +76,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
           'isUser': false,
           'tag': uuid.v4(),
         });
+        animationController.forward(from: 0.0);
       });
     });
   }
@@ -73,11 +84,11 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFF3F7FD),
+      backgroundColor: const Color(0xFFE3F2FD), // Improved background color
       appBar: AppBar(
         title: const Text('GChat'),
-        backgroundColor: Colors.white.withOpacity(0.7), // translucent blur effect
-        elevation: 0,
+        backgroundColor: Colors.blueAccent,
+        elevation: 1,
       ),
       body: Column(
         children: [
@@ -91,11 +102,11 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
                   msg['text'],
                   msg['isUser'] ?? false,
                   isTyping: msg['isTyping'] ?? false,
-                );
+                ).animate().fadeIn(duration: 300.ms);
               },
             ),
           ),
-          _chatInputArea()
+          _chatInputArea().animate().slideY(duration: 500.ms, begin: 1, end: 0)
         ],
       ),
     );
@@ -105,24 +116,26 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
     return Align(
       alignment: isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        margin: const EdgeInsets.only(bottom: 12),
+        padding:const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        margin:const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: isUser ? const Color(0xFFF19C37D) : const Color(0xFFFFFFFF),
+          color: isUser ? Colors.blueAccent : Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(18),
-            topRight: const Radius.circular(18),
+            topLeft: Radius.circular(18),
+            topRight: Radius.circular(18),
             bottomLeft: Radius.circular(isUser ? 18 : 0),
             bottomRight: Radius.circular(isUser ? 0 : 18),
           ),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4)
+            BoxShadow(color: Colors.grey.shade200, blurRadius: 6)
           ],
         ),
         child: Text(
           isTyping ? '...' : message,
           style: TextStyle(
-              color: isUser ? Colors.white : Colors.black87, fontSize: 16),
+            color: isUser ? Colors.white : Colors.black87,
+            fontSize: 16,
+          ),
         ),
       ),
     );
@@ -130,32 +143,33 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
 
   Widget _chatInputArea() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      padding:const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       child: Row(
         children: [
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: TextField(
-                controller: textController,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  hintText: 'Write your message here...',
-                  border: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: TextField(
+              controller: textController,
+              style: const TextStyle(color: Colors.black87),
+              decoration: InputDecoration(
+                hintText: 'Write your message here...',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
                 ),
+                contentPadding:const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               ),
             ),
           ),
           const SizedBox(width: 12),
-          CircleAvatar(
-            backgroundColor: const Color(0xFFF19C37D),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueAccent,
+            ),
             child: IconButton(
-              icon: const Icon(Icons.send_outlined, color: Colors.white),
+              icon:const Icon(Icons.send, color: Colors.white),
               onPressed: sendMessage,
             ),
           ),
@@ -164,6 +178,3 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget> {
     );
   }
 }
-
-// Set your widget name, define your parameter, and then add the
-// boilerplate code using the green button on the right!
