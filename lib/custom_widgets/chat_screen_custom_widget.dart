@@ -41,7 +41,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
     );
   }
 
-  // Function to handle sending messages and animation
+  // Handle sending messages with animation and timestamp
   void sendMessage() {
     if (textController.text.isEmpty) return;
 
@@ -49,6 +49,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
       'text': textController.text,
       'isUser': true,
       'tag': uuid.v4(),
+      'timestamp': DateFormat('HH:mm').format(DateTime.now()),
     };
 
     setState(() {
@@ -61,6 +62,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
       'text': 'Assistant typing...',
       'isTyping': true,
       'tag': uuid.v4(),
+      'timestamp': DateFormat('HH:mm').format(DateTime.now()),
     };
 
     setState(() {
@@ -75,6 +77,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
           'text': 'This is a mock response from assistant.',
           'isUser': false,
           'tag': uuid.v4(),
+          'timestamp': DateFormat('HH:mm').format(DateTime.now()),
         });
         animationController.forward(from: 0.0);
       });
@@ -98,11 +101,25 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final msg = messages[index];
-                return _buildChatBubble(
-                  msg['text'],
-                  msg['isUser'] ?? false,
-                  isTyping: msg['isTyping'] ?? false,
-                ).animate().fadeIn(duration: 300.ms);
+                return Column(
+                  crossAxisAlignment: msg['isUser']
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    _buildChatBubble(
+                      msg['text'],
+                      msg['isUser'] ?? false,
+                      isTyping: msg['isTyping'] ?? false,
+                    ).animate().fadeIn(duration: 300.ms),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Text(
+                        msg['timestamp'],
+                        style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                      ),
+                    ),
+                  ],
+                );
               },
             ),
           ),
@@ -115,7 +132,8 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
   Widget _buildChatBubble(String message, bool isUser,
       {bool isTyping = false}) {
     return Align(
-      alignment: isUser ? Alignment.topRight : Alignment.topLeft,
+      alignment:
+          isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         margin: const EdgeInsets.only(bottom: 12),
@@ -153,10 +171,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
                 hintText: 'Write your message here...',
                 filled: true,
                 fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide.none,
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               ),
@@ -178,5 +193,3 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
     );
   }
 }
-// Set your widget name, define your parameter, and then add the
-// boilerplate code using the green button on the right!
