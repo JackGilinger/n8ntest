@@ -1,15 +1,15 @@
+// Automatic FlutterFlow imports
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart';
-import '/flutter_flow/custom_functions.dart';
+import '/custom_code/widgets/index.dart'; // Imports other custom widgets
+import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:uuid/uuid.dart';
-import 'dart:async';
-
+// Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-// Additional imports for animations and timers
+import 'package:flutter_animate/flutter_animate.dart';
+import 'dart:async';
+import 'package:uuid/uuid.dart';
 
 class ChatScreenWidget extends StatefulWidget {
   final double width;
@@ -112,12 +112,13 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
     );
   }
 
-  Widget _buildChatBubble(String message, bool isUser, {bool isTyping = false}) {
+  Widget _buildChatBubble(String message, bool isUser,
+      {bool isTyping = false}) {
     return Align(
       alignment: isUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
-        padding:const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        margin:const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           color: isUser ? Colors.blueAccent : Colors.white,
           borderRadius: BorderRadius.only(
@@ -126,9 +127,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
             bottomLeft: Radius.circular(isUser ? 18 : 0),
             bottomRight: Radius.circular(isUser ? 0 : 18),
           ),
-          boxShadow: [
-            BoxShadow(color: Colors.grey.shade200, blurRadius: 6)
-          ],
+          boxShadow: [BoxShadow(color: Colors.grey.shade200, blurRadius: 6)],
         ),
         child: Text(
           isTyping ? '...' : message,
@@ -143,7 +142,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
 
   Widget _chatInputArea() {
     return Padding(
-      padding:const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       child: Row(
         children: [
           Expanded(
@@ -158,7 +157,8 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
                   borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding:const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               ),
             ),
           ),
@@ -169,7 +169,7 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
               color: Colors.blueAccent,
             ),
             child: IconButton(
-              icon:const Icon(Icons.send, color: Colors.white),
+              icon: const Icon(Icons.send, color: Colors.white),
               onPressed: sendMessage,
             ),
           ),
@@ -178,3 +178,5 @@ class _ChatScreenWidgetState extends State<ChatScreenWidget>
     );
   }
 }
+// Set your widget name, define your parameter, and then add the
+// boilerplate code using the green button on the right!
