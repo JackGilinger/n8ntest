@@ -27,10 +27,10 @@ class AddEmotionScreen extends StatefulWidget {
 class _AddEmotionScreenState extends State<AddEmotionScreen> {
   final List<String> emotions = [
     'Радость',
-    'Грусть',
-    'Злость',
+    'Печаль',
+    'Гнев',
     'Страх',
-    'Удивление'
+    'Спокойствие'
   ];
   String selectedEmotion = 'Радость';
   double intensityValue = 3;
@@ -47,7 +47,7 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
   void _validateIntensity(double value) {
     setState(() {
       if (value < 1 || value > 5) {
-        _intensityError = 'Интенсивность должна быть от 1 до 5';
+        _intensityError = 'Значение должно быть от 1 до 5';
       } else {
         _intensityError = null;
       }
@@ -58,7 +58,8 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
   Future<void> _saveEmotion() async {
     if (_noteController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Пожалуйста, добавьте описание')),
+        const SnackBar(
+            content: Text('Пожалуйста, введите комментарий')),
       );
       return;
     }
@@ -80,9 +81,7 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
         intensityValue,
         _noteController.text,
       );
-      if (mounted) {
-        Navigator.pop(context);
-      }
+      if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -102,16 +101,16 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Новая запись'),
+        title: const Text('Добавить эмоцию'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Выберите эмоцию:',
-              style: FlutterFlowTheme.of(context).bodyLarge,
+              style: FlutterFlowTheme.of(context).titleMedium,
             ),
             const SizedBox(height: 8),
             Wrap(
@@ -125,19 +124,21 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
                       selectedEmotion = emotion;
                     });
                   },
+                  selectedColor: FlutterFlowTheme.of(context).primary,
                 );
               }).toList(),
             ),
             const SizedBox(height: 24),
             Text(
               'Интенсивность:',
-              style: FlutterFlowTheme.of(context).bodyLarge,
+              style: FlutterFlowTheme.of(context).titleMedium,
             ),
             Slider(
               value: intensityValue,
               min: 1,
               max: 5,
               divisions: 4,
+              activeColor: FlutterFlowTheme.of(context).primary,
               label: intensityValue.round().toString(),
               onChanged: _validateIntensity,
             ),
@@ -146,16 +147,20 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
                 padding: const EdgeInsets.only(left: 12),
                 child: Text(
                   _intensityError!,
-                  style: TextStyle(color: Colors.red[700], fontSize: 12),
+                  style: TextStyle(color: Colors.red, fontSize: 12),
                 ),
               ),
             const SizedBox(height: 24),
             TextField(
               controller: _noteController,
-              maxLines: 4,
-              decoration: const InputDecoration(
-                labelText: 'Описание ситуации',
+              maxLines: 3,
+              decoration: InputDecoration(
+                labelText: 'Комментарий',
                 border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: FlutterFlowTheme.of(context).primary),
+                ),
               ),
             ),
             const SizedBox(height: 32),
@@ -163,9 +168,14 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _saveEmotion,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: FlutterFlowTheme.of(context).primary,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
                 child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Сохранить'),
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Сохранить',
+                        style: TextStyle(color: Colors.white)),
               ),
             ),
           ],
@@ -174,5 +184,3 @@ class _AddEmotionScreenState extends State<AddEmotionScreen> {
     );
   }
 }
-// Set your widget name, define your parameter, and then add the
-// boilerplate code using the green button on the right!
