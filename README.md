@@ -1,137 +1,137 @@
-# Дневник эмоций - Техническое задание
+# Emotional Diary - Technical Task
 
-## Описание проекта
-Мобильное приложение для отслеживания эмоционального состояния пользователя. Минималистичный и интуитивно понятный интерфейс с базовым необходимым функционалом.
+## Project Description
+A mobile application for tracking the user's emotional state. Minimalistic and intuitive interface with basic necessary functionality.
 
-## Основной функционал
+## Main functionality
 
-### 1. Экран авторизации ✅
-- Только базовая авторизация (email/пароль) через callbacks
-- Вход через существующий аккаунт
-- Возможность сброса пароля
+### 1. Authorization screen ✅
+- Only basic authorization (email/password) via callbacks
+- Login via an existing account
+- Ability to reset password
 
-### 2. Главный экран ✅
-- Упрощенный выбор даты через стандартный DatePicker
-- Список записей за выбранный день
-- Кнопка добавления новой записи
-- Фильтрация записей по периоду (день/неделя/месяц)
+### 2. Main screen ✅
+- Simplified date selection via standard DatePicker
+- List of entries for the selected day
+- Add new entry button
+- Filter entries by period (day/week/month)
 
-### 3. Экран создания/редактирования записи ✅
-- Выбор основной эмоции из предустановленного списка (радость, грусть, злость, страх, удивление)
-- Шкала интенсивности эмоции (1-5)
-- Текстовое поле для описания ситуации
-- Возможность добавить теги
-- Выбор времени записи
+### 3. Entry creation/editing screen ✅
+- Selection of the main emotion from a preset list (joy, sadness, anger, fear, surprise)
+- Emotion intensity scale (1-5)
+- Text field for describing the situation
+- Ability to add tags
+- Selection of entry time
 
-### 4. Экран статистики ✅
-- Простое отображение распределения эмоций через нативные виджеты
-- Отображение интенсивности эмоций через базовые элементы
-- Облако часто используемых тегов
+### 4. Statistics screen ✅
+- Simple display of emotion distribution via native widgets
+- Display of emotion intensity via basic elements
+- Cloud of frequently used tags
 
-### 5. Экран настроек ✅
-- Настройка уведомлений
-- Экспорт данных в PDF
-- Смена языка приложения (английский/русский)
-- Темная/светлая тема
+### 5. Settings screen ✅
+- Notification settings
+- Export data to PDF
+- Change application language (English/Russian)
+- Dark/light theme
 
-## Техническое описание
+## Technical description
 
-### Структура проекта ✅
+### Project structure ✅
 ```
 lib/
-  ├─ screens/
-  │   ├─ auth/
-  │   │   └─ auth_screen.dart          # Экран авторизации ✅
-  │   ├─ home/
-  │   │   └─ home_screen.dart          # Главный экран с календарем ✅
-  │   ├─ emotion/
-  │   │   └─ add_emotion_screen.dart   # Экран добавления эмоции ✅
-  │   ├─ statistics/
-  │   │   └─ statistics_screen.dart    # Экран статистики ✅
-  │   └─ settings/
-  │       └─ settings_screen.dart      # Экран настроек ✅
-  ├─ widgets/
-  │   ├─ emotion_card.dart            # Карточка эмоции ✅
-  │   └─ emotion_picker.dart          # Виджет выбора эмоции ✅
-  ├─ models/
-  │   └─ emotion_record.dart          # Модель записи эмоции ✅
-  └─ utils/
-      └─ theme.dart                   # Настройки темы ✅
+├─ screens/
+│ ├─ auth/
+│ │ └─ auth_screen.dart # Authorization screen ✅
+│ ├─ home/
+│ │ └─ home_screen.dart # Main screen with calendar ✅
+│ ├─ emotion/
+│ │ └─ add_emotion_screen.dart # Screen for adding emotion ✅
+│ ├─ statistics/
+│ │ └─ statistics_screen.dart # Statistics screen ✅
+│ └─ settings/
+│ └─ settings_screen.dart # Settings screen ✅
+├─ widgets/
+│ ├─ emotion_card.dart # Emotion card ✅
+│ └─ emotion_picker.dart # Emotion picker widget ✅
+├─ models/
+│ └─ emotion_record.dart # Emotion record model ✅
+└─ utils/
+└─ theme.dart # Theme settings ✅
 ```
 
-### Статус реализации компонентов:
+### Component implementation status:
 
-#### Экраны:
-- ✅ auth_screen.dart: Вся логика авторизации передается через callback
-- ✅ home_screen.dart: Логика работы с данными через callback
-- ✅ add_emotion_screen.dart: Логика сохранения через callback
-- ✅ statistics_screen.dart: Получение данных через callback
-- ✅ settings_screen.dart: Настройки через callback
+#### Screens:
+- ✅ auth_screen.dart: All authorization logic is passed via callback
+- ✅ home_screen.dart: Logic for working with data via callback
+- ✅ add_emotion_screen.dart: Logic for saving via callback
+- ✅ statistics_screen.dart: Getting data via callback
+- ✅ settings_screen.dart: Settings via callback
 
-#### Виджеты:
-- ✅ emotion_card.dart: События через callback
-- ✅ emotion_picker.dart: Выбор через callback
+#### Widgets:
+- ✅ emotion_card.dart: Events via callback
+- ✅ emotion_picker.dart: Selection via callback
 
-#### Модели:
-- ✅ emotion_record.dart: Чистая модель данных
+#### Models:
+- ✅ emotion_record.dart: Clean data model
 
-#### Утилиты:
-- ✅ theme.dart: Реализованы светлая и тёмная тема
+#### Utilities:
+- ✅ theme.dart: Light and dark themes implemented
 
-### Важные примечания по реализации:
+### Important implementation notes:
 
-1. Вся бизнес-логика должна передаваться через callbacks в конструкторах виджетов:
-   ```dart
-   EmotionCard({
-     required EmotionRecord emotion,
-     required Function(EmotionRecord) onEdit,
-     required Function(EmotionRecord) onDelete,
-   });
-   ```
+1. All business logic should be passed via callbacks in widget constructors:
+```dart
+EmotionCard({
+required EmotionRecord emotion,
+required Function(EmotionRecord) onEdit,
+ required Function(EmotionRecord) onDelete,
+ });
+ ```
 
-2. Хранение данных:
-   - Вся логика хранения должна быть реализована извне
-   - Виджеты только отображают данные и вызывают callbacks
+2. Data storage:
+- All storage logic should be implemented externally
+- Widgets only display data and call callbacks
 
-3. Сетевые запросы:
-   - Вся работа с сетью должна быть реализована извне
-   - Виджеты получают только готовые данные
+3. Network requests:
+- All network work should be implemented externally
+- Widgets receive only ready data
 
-4. Работа с платформой:
-   - Доступ к системным функциям через callbacks
+4. Working with the platform:
+- Access to system functions via callbacks
 
-### Безопасность ✅
-- Шифрование данных при хранении
-- Защита от несанкционированного доступа
-- Регулярное резервное копирование
+### Security ✅
+- Data encryption during storage
+- Protection from unauthorized access
+- Regular backup
 
-### Тестирование
-- ✅ Unit-тесты для моделей
-- ✅ Unit-тесты для сервисов
-- ✅ Widget-тесты для основных экранов
-- 📝 Integration тесты (в процессе)
-- 📝 Performance тесты (в процессе)
+### Testing
+- ✅ Unit tests for models
+- ✅ Unit tests for services
+- ✅ Widget tests for main screens
+- 📝 Integration tests (in progress)
+- 📝 Performance tests (in progress)
 
-### Требует доработки:
+### Needs improvement:
 
-#### 1. Функциональность:
-- 📝 Реализовать экспорт данных в PDF
-- 📝 Добавить оффлайн режим
-- 📝 Улучшить систему уведомлений
+#### 1. Functionality:
+- 📝 Implement export data to PDF
+- 📝 Add offline mode
+- 📝 Improve notification system
 
-#### 2. Тестирование:
-- 📝 Добавить integration тесты
-- 📝 Провести нагрузочное тестирование
-- 📝 Тестирование безопасности
+#### 2. Testing:
+- 📝 Add integration tests
+- 📝 Conduct load testing
+- 📝 Security testing
 
-#### 3. Документация:
-- 📝 Добавить документацию API
-- 📝 Составить руководство пользователя
-- 📝 Подготовить документацию для публикации
+#### 3. Documentation:
+- 📝 Add API documentation
+- 📝 Create user guide
+- 📝 Prepare documentation for publication
 
-### План следующего релиза:
-1. Реализация оффлайн режима
-2. Доработка экспорта данных
-3. Улучшение производительности
-4. Расширение функционала уведомлений
-5. Добавление новых видов статистики
+### Next release plan:
+1. Implement offline mode
+2. Improve data export
+3. Improve performance
+4. Expand notification functionality
+5. Add new types of statistics
